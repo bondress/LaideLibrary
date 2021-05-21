@@ -1,7 +1,6 @@
 package com.laide.LaideLibrary;
 
 import com.laide.LaideLibrary.entities.Book;
-import com.laide.LaideLibrary.entities.Rental;
 import com.laide.LaideLibrary.entities.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -136,59 +135,6 @@ public class LaideLibraryApplicationTests {
 		restTemplate.delete(getRootUrl() + "/deleteUserById/" + id);
 		try {
 			user = restTemplate.getForObject(getRootUrl() + "/deleteUserById/" + id, User.class);
-		} catch (final HttpClientErrorException e) {
-			assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
-		}
-	}
-
-	@Test
-	public void testGetAllRentals() {
-		HttpHeaders headers = new HttpHeaders();
-		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
-		ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/allRentals",
-				HttpMethod.GET, entity, String.class);
-		assertNotNull(response.getBody());
-	}
-
-	@Test
-	public void testGetRental() {
-		Rental rental = restTemplate.getForObject(getRootUrl() + "/getRentalById/1", Rental.class);
-		System.out.println(rental.getUserId());
-		assertNotNull(rental);
-	}
-
-	@Test
-	public void testCreateRental() {
-		Rental rental = new Rental();
-		rental.setRentalId(4);
-		rental.setUserId(2);
-		rental.setBookId(3);
-		rental.setReturned(0);
-		ResponseEntity<Rental> postResponse = restTemplate.postForEntity(getRootUrl() + "/addRental", rental, Rental.class);
-		assertNotNull(postResponse);
-		assertNotNull(postResponse.getBody());
-	}
-
-	@Test
-	public void testUpdateRental() {
-		int id = 1;
-		Rental rental = restTemplate.getForObject(getRootUrl() + "/rentals/" + id, Rental.class);
-		rental.setUserId(1);
-		rental.setBookId(1);
-		rental.setReturned(1);
-		restTemplate.put(getRootUrl() + "/updateRentalById/" + id, rental);
-		Rental updatedRental = restTemplate.getForObject(getRootUrl() + "/updateRentalById/" + id, Rental.class);
-		assertNotNull(updatedRental);
-	}
-
-	@Test
-	public void testDeleteRental() {
-		int id = 2;
-		Rental rental = restTemplate.getForObject(getRootUrl() + "/deleteRentalById/" + id, Rental.class);
-		assertNotNull(rental);
-		restTemplate.delete(getRootUrl() + "/deleteRentalById/" + id);
-		try {
-			rental = restTemplate.getForObject(getRootUrl() + "/deleteRentalById/" + id, Rental.class);
 		} catch (final HttpClientErrorException e) {
 			assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
 		}
